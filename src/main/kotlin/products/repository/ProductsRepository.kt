@@ -18,5 +18,9 @@ class ProductsRepository(
             product -> product.value.name == productName
     }.values.toList()
 
+    fun containsProduct(id: String) = productMap.containsKey(id)
+
+    fun deleteProduct(id: String) = productMap.remove(id)
+
     fun getAllProducts():List<Product> = productMap.values.toList()
 }

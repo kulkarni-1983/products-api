@@ -8,11 +8,12 @@ import products.exceptions.ProductExists
 
 import products.repository.ProductsRepository
 import products.repository.model.Product
+import products.services.ProductsService.Companion.toRepositoryProduct
 
 @Component
 class ProductsService(private val productsRepository: ProductsRepository) {
 
-    fun addProducts(product: ControllerProduct) = run {
+    fun addProduct(product: ControllerProduct) = run {
         if(productsRepository.filterByName(product.name).isNotEmpty()) {
             throw ProductExists("Product cannot be added: Product with ${product.name} already exists")
         }
@@ -40,6 +41,12 @@ class ProductsService(private val productsRepository: ProductsRepository) {
     }
 
     fun getAllProducts() = productsRepository.getAllProducts().map{ it.toControllerProduct()}
+
+    fun deleteProduct(id: String) = run {
+        productsRepository.getProduct(id)?.run {
+            productsRepository.deleteProduct(id)?.toControllerProduct()
+        } ?: throw ProductDoesNotExist("Product with id: $id doesn't exist")
+    }
 
     companion object {
         private fun ControllerProduct.toRepositoryProduct(id:String? = null) =

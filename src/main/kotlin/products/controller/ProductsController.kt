@@ -11,32 +11,36 @@ import products.services.ProductsService
 import java.lang.RuntimeException
 
 @RestController
-@RequestMapping("/products")
 class ProductsController(private val productsService: ProductsService) {
 
-    @GetMapping
+    @GetMapping("/products")
     fun getAllProducts() = productsService.getAllProducts()
 
-    @GetMapping("/{id}")
+    @GetMapping("/products/{id}")
     fun getProductById(
         @PathVariable id: String
     ): Product = productsService.getProductById(id)
 
-    @GetMapping("/name={name}")
+    @GetMapping("/products/name={name}")
     fun getProductByName(
     @PathVariable name: String
     ): Product = productsService.getProductByName(name)
 
-    @PostMapping
+    @PostMapping("/products")
     fun addProduct(
         @RequestBody product: Product
-    ): Product = productsService.addProducts(product)
+    ): Product = productsService.addProduct(product)
 
-    @PutMapping("/{id}")
+    @PutMapping("/products/{id}")
     fun updateProduct(
         @PathVariable id: String,
         @RequestBody product: Product
     ): Product = productsService.updateProduct(id, product)
+
+    @DeleteMapping("/products/{id}")
+    fun deleteProduct(
+        @PathVariable id: String
+    ): Product = productsService.deleteProduct(id)
 
     @ExceptionHandler(ProductExists::class, ProductDoesNotExist::class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
