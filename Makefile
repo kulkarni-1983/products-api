@@ -1,6 +1,6 @@
 
-export APP_VERSION?=0.1
-export SERVER_PORT?=8080
+export APP_VERSION ?=$(shell jq -j '.version' package.json)
+export SERVER_PORT ?=8080
 export LOG_LEVEL ?= info
 
 # Uses the atrifact url if provided else assumes ECR using the provided AWS account details
@@ -25,6 +25,14 @@ build_image:
 .PHONY: run_image
 run_image: 
 	docker-compose up build-products-api-container
+
+.PHONY: test
+test: 
+	@echo "run integration tests"
+	docker-compose up -d --force-recreate build-products-api-container
+	@sleep 10
+	docker-compose run --rm tester yarn && yarn integration-test
+	docker-compose down
 
 .PHONY: tag_image
 tag_image:

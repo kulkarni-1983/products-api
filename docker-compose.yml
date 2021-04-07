@@ -19,6 +19,21 @@ services:
       - LOG_LEVEL
     ports: 
       - "${SERVER_PORT}:${SERVER_PORT}"
+    networks:
+      - service-network
+
+  tester:
+    image: node:14-alpine3.10
+    volumes:
+      - ".:/app"
+    working_dir: /app
+    environment:
+      - SERVER_PORT
+      - SERVER_URL=${IMAGE_NAME}
+      - GIT_COMMIT
+      - APP_VERSION
+    networks:
+      - service-network
 
   infra:
     image: hashicorp/terraform:0.14.5
@@ -33,3 +48,7 @@ services:
     volumes:
       - './infra/:/app'
     working_dir: /app
+
+networks:
+  service-network:
+    name: service-network
