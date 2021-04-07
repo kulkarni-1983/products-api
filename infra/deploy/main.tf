@@ -24,7 +24,7 @@ module "api_service_ecs_service" {
 
   ecs_cluster_name = module.api_service_ecs_cluster.cluster_name
 
-  container_name = "api-service-provider"
+  container_name = "products-api"
   container_port = 8080
   image_url      = var.products_api_image_url
   # possible values for fargate 256,512,1024....

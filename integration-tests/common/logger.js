@@ -5,7 +5,7 @@ const options = {
   level: logLevel,
   format: winston.format.json(),
   defaultMeta: {
-    service: 'api-service-provider'
+    service: 'products-api'
   },
   transports: [new winston.transports.Console({ handleExceptions: true })]
 }

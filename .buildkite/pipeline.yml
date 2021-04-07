@@ -1,0 +1,49 @@
+steps:
+  - label: "::kotlin: Build & Unit Test App Service provider"
+    command:
+      - make build
+    agents:
+      queue: "${BUILD_AGENT_NAME:-build.linux}"
+    artifact_paths:
+      - "build/libs/*.jar"
+      
+  - wait:
+
+  - label: ":nodejs: Integration test of App Service provider"
+    command:
+      - make test
+    agents:
+      queue: "${BUILD_AGENT_NAME:-build.linux}"
+    plugins:
+      - artifacts#v1.3.0:
+          download: ["build/libs/*.jar"]
+      
+  - wait:
+    branches: "main master"
+
+  - label: ":artifactory::docker: Build & Push app service provider"
+    branches: "main master"
+    command: 
+      - make build_image
+      - make tag_image
+      - make push_image 
+    env:
+      GIT_COMMIT: "${BUILDKITE_COMMIT}"
+    agents:
+      queue: "${DEPLOY_AGENT_NAME:-deploy.linux}"
+    plugins:
+      - artifacts#v1.3.0:
+          download: ["build/libs/*.jar"]
+  
+  - wait:
+    branches: "main master"
+  
+  - label: ":terraform::amazon-aws: Deploy the app service provider"
+    branches: "main master"
+    command: 
+      - make infra_plan
+      - make infra_deploy
+    env:
+      GIT_COMMIT: "${BUILDKITE_COMMIT}"
+    agents:
+      queue: "${DEPLOY_AGENT_NAME:-deploy.linux}"
