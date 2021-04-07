@@ -38,9 +38,9 @@ Product model:
 Options model:
 ```
 {
-  "Id": "e2a93ce9-8c41-4faa-b077-20abb4e590fff",
-  "Name": "Name of the product option",
-  "Description": "Description of the product option"
+  "id": "e2a93ce9-8c41-4faa-b077-20abb4e590fff",
+  "name": "Name of the product option",
+  "description": "Description of the product option"
 }
 ```
 

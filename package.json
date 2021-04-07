@@ -17,7 +17,8 @@
   },
   "scripts": {
     "fix": "eslint --fix integration-tests/*",
-    "lint": "eslint ntegration-tests/*",
-    "integration-test": "jest --config ./jest.config.js ./integration-tests/"
+
+    "lint": "eslint init && eslint integration-tests/*",
+    "integration-test": "jest --runInBand --config ./jest.config.js ./integration-tests/"
   }
 }
