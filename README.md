@@ -151,7 +151,7 @@ Reason for choosing kotlin programming language
 
 ![Architecture](./docs/Arch-Capture.png)
                 
-# Pending
+# Enhancements to consider
 
 ## Reliability
 
