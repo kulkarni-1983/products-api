@@ -27,6 +27,14 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+	testImplementation("org.jetbrains.kotlin:kotlin-test")
+
+//	testImplementation("io.kotlintest:kotlintest-runner-junit5")
+//	testImplementation("io.kotlintest:kotlintest-core")
+//	testImplementation("io.kotlintest:kotlintest-extensions-spring")
+//	testImplementation("org.junit.jupiter:junit-jupiter-engine")
+
 }
 
 tasks.withType<KotlinCompile> {

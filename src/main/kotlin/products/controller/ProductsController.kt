@@ -13,36 +13,36 @@ import java.lang.RuntimeException
 @RestController
 class ProductsController(private val productsService: ProductsService) {
 
-    @GetMapping("/products")
-    fun getAllProducts() = productsService.getAllProducts()
+  @GetMapping("/products")
+  fun getAllProducts() = productsService.getAllProducts()
 
-    @GetMapping("/products/{id}")
-    fun getProductById(
-        @PathVariable id: String
-    ): Product = productsService.getProductById(id)
+  @GetMapping("/products/{id}")
+  fun getProductById(
+    @PathVariable id: String
+  ): Product = productsService.getProductById(id)
 
-    @GetMapping("/products/name={name}")
-    fun getProductByName(
+  @GetMapping("/products/name={name}")
+  fun getProductByName(
     @PathVariable name: String
-    ): Product = productsService.getProductByName(name)
+  ): Product = productsService.getProductByName(name)
 
-    @PostMapping("/products")
-    fun addProduct(
-        @RequestBody product: Product
-    ): Product = productsService.addProduct(product)
+  @PostMapping("/products")
+  fun addProduct(
+    @RequestBody product: Product
+  ): Product = productsService.addProduct(product)
 
-    @PutMapping("/products/{id}")
-    fun updateProduct(
-        @PathVariable id: String,
-        @RequestBody product: Product
-    ): Product = productsService.updateProduct(id, product)
+  @PutMapping("/products/{id}")
+  fun updateProduct(
+    @PathVariable id: String,
+    @RequestBody product: Product
+  ): Product = productsService.updateProduct(id, product)
 
-    @DeleteMapping("/products/{id}")
-    fun deleteProduct(
-        @PathVariable id: String
-    ): Product = productsService.deleteProduct(id)
+  @DeleteMapping("/products/{id}")
+  fun deleteProduct(
+    @PathVariable id: String
+  ): Product = productsService.deleteProduct(id)
 
-    @ExceptionHandler(ProductExists::class, ProductDoesNotExist::class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    fun handleProductExists(exception: RuntimeException) = exception.toErrorResponse()
+  @ExceptionHandler(ProductExists::class, ProductDoesNotExist::class)
+  @ResponseStatus(HttpStatus.FORBIDDEN)
+  fun handleException(exception: RuntimeException) = exception.toErrorResponse()
 }

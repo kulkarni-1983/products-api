@@ -7,20 +7,21 @@ import products.repository.model.Product
 class ProductsRepository(
 
 ) {
-    private val productMap = HashMap<String, Product>()
+  private val productMap = HashMap<String, Product>()
 
-    fun addOrUpdateProduct(product: Product) = run {
-        productMap[product.id] = product
-        product
-    }
-    fun getProduct(id: String) = productMap[id]
-    fun filterByName(productName: String) = productMap.filter{
-            product -> product.value.name == productName
-    }.values.toList()
+  fun addOrUpdateProduct(product: Product) = run {
+    productMap[product.id] = product
+    product
+  }
 
-    fun containsProduct(id: String) = productMap.containsKey(id)
+  fun getProduct(id: String) = productMap[id]
+  fun filterByName(productName: String) = productMap.filter { product ->
+    product.value.name == productName
+  }.values.toList()
 
-    fun deleteProduct(id: String) = productMap.remove(id)
+  fun containsProduct(id: String) = productMap.containsKey(id)
 
-    fun getAllProducts():List<Product> = productMap.values.toList()
+  fun deleteProduct(id: String) = productMap.remove(id)
+
+  fun getAllProducts(): List<Product> = productMap.values.toList()
 }

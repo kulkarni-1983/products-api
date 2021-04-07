@@ -8,52 +8,51 @@ import products.exceptions.ProductExists
 
 import products.repository.ProductsRepository
 import products.repository.model.Product
-import products.services.ProductsService.Companion.toRepositoryProduct
 
 @Component
 class ProductsService(private val productsRepository: ProductsRepository) {
 
-    fun addProduct(product: ControllerProduct) = run {
-        if(productsRepository.filterByName(product.name).isNotEmpty()) {
-            throw ProductExists("Product cannot be added: Product with ${product.name} already exists")
-        }
-        productsRepository.addOrUpdateProduct(product.toRepositoryProduct()).toControllerProduct()
+  fun addProduct(product: ControllerProduct) = run {
+    if (productsRepository.filterByName(product.name).isNotEmpty()) {
+      throw ProductExists("Product cannot be added: Product with ${product.name} already exists")
     }
+    productsRepository.addOrUpdateProduct(product.toRepositoryProduct()).toControllerProduct()
+  }
 
-    fun getProductById(id: String) = try {
-        productsRepository.getProduct(id)!!.toControllerProduct()
-    } catch (e: Exception) {
-        throw ProductDoesNotExist("Product with id: $id doesn't exist")
+  fun getProductById(id: String) = try {
+    productsRepository.getProduct(id)!!.toControllerProduct()
+  } catch (e: Exception) {
+    throw ProductDoesNotExist("Product with id: $id doesn't exist")
+  }
+
+  fun getProductByName(name: String) = run {
+    val products = productsRepository.filterByName(name)
+    if (products.isEmpty()) {
+      throw ProductDoesNotExist("Product with name: $name doesn't exist")
     }
+    products[0].toControllerProduct()
+  }
 
-    fun getProductByName(name: String) = run {
-        val products = productsRepository.filterByName(name)
-        if(products.isEmpty()) {
-            throw ProductDoesNotExist("Product with name: $name doesn't exist")
-        }
-        products[0].toControllerProduct()
-    }
+  fun updateProduct(id: String, product: ControllerProduct) = run {
+    productsRepository.getProduct(id)?.run {
+      productsRepository.addOrUpdateProduct(product.toRepositoryProduct(id)).toControllerProduct()
+    } ?: throw ProductDoesNotExist("Product with id: $id doesn't exist")
+  }
 
-    fun updateProduct(id: String, product: ControllerProduct) = run {
-        productsRepository.getProduct(id)?.run {
-            productsRepository.addOrUpdateProduct(product.toRepositoryProduct(id)).toControllerProduct()
-        } ?: throw ProductDoesNotExist("Product with id: $id doesn't exist")
-    }
+  fun getAllProducts() = productsRepository.getAllProducts().map { it.toControllerProduct() }
 
-    fun getAllProducts() = productsRepository.getAllProducts().map{ it.toControllerProduct()}
+  fun deleteProduct(id: String) = run {
+    productsRepository.getProduct(id)?.run {
+      productsRepository.deleteProduct(id)?.toControllerProduct()
+    } ?: throw ProductDoesNotExist("Product with id: $id doesn't exist")
+  }
 
-    fun deleteProduct(id: String) = run {
-        productsRepository.getProduct(id)?.run {
-            productsRepository.deleteProduct(id)?.toControllerProduct()
-        } ?: throw ProductDoesNotExist("Product with id: $id doesn't exist")
-    }
+  companion object {
+    private fun ControllerProduct.toRepositoryProduct(id: String? = null) =
+      Product(id ?: generateId(), name, description, price, deliveryPrice)
 
-    companion object {
-        private fun ControllerProduct.toRepositoryProduct(id:String? = null) =
-            Product(id ?: generateId() , name, description, price, deliveryPrice)
-
-        private fun Product.toControllerProduct() =
-            ControllerProduct(id, name, description, price, deliveryPrice)
-    }
+    private fun Product.toControllerProduct() =
+      ControllerProduct(id, name, description, price, deliveryPrice)
+  }
 
 }
