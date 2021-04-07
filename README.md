@@ -1,12 +1,13 @@
 # Products-api
 Proof of concept API interface which provides users to do CRUD operation on products and it's options
 ## Highlights
-- API server exposes basic endpoints `/health` and `/products` (Use explained below) .
+- API server exposes basic endpoints `/health` and `/products` (as explained below) .
 - Repository follows [The Twelve-Factor App](https://12factor.net) approach
 - Build and deploy follows [3 musketeers](https://amaysim.engineering/the-3-musketeers-how-make-docker-and-compose-enable-us-to-release-many-times-a-day-e92ca816ef17) approach of docker-compose, dockerfile and Makefile
-- **Kotlin** for Code and unit-testing
+- Tried to follow [clean architecture development](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- **Kotlin** for code and unit-testing
 - **Nodejs** for integration testing
-- Code is built, linted, unit tested, integration tested and pushed to artifact( specified or by default ECR)
+- Code is built, unit tested, integration tested and pushed to artifact (specified or by default ECR)
 - Deployed to **AWS ECS-Fargate**. Exposes the ALB endpoint to connect to the API endpoint
 - **Terraform** for infra structure as code 
 - **Buildkite** pipeline for CI/CD. Pipeline builds,tests, build and push the image and deploy to AWS.
@@ -91,7 +92,7 @@ make infra_shell
 # Repository walk-through
 ## Kotlin programming language for code and unit testing
 Reason for choosing kotlin programming language
-* Been using `Kotlin`, `Nodejs` and `Python` actively. However, modeling requirement makes Kotlin to fit in very easily.
+* Been using `Kotlin`, `Nodejs` and `Python` actively. However, the above modeling requirement makes Kotlin to fit in very easily.
 * Ease of exposing REST endpoint. 
 * Testing: Like any other programming language, can easily be broken into smaller components. Hence the testing can be done in smaller units
 
@@ -108,7 +109,7 @@ Reason for choosing kotlin programming language
 * `node-js` as programming language
 * `integration-tests` directory host integrations tests
 * Both application container and test container are run in the same docker-network. This helps the test container communicate with the application container
-* Test verifies `/health`, /products endpoints
+* Test verifies `/health` and `/products` endpoints
 
 ## Deployment and Infrastructure 
 * **AWS** as cloud service provider
@@ -154,8 +155,8 @@ Reason for choosing kotlin programming language
 
 ## Reliability
 
-Api task/container holds the data. This is not a `product-scale` architecture. I wanted to hold the data is a AWS/any-other managed database. 
-May be `RDS`, `Mongo-Atlas` or `dynamo` would have been good choices
+Api task/container holds the data. This is not a `production-scale` architecture. I wanted to hold the data in a AWS/any-other managed database. 
+May be `RDS`, `Mongo-Atlas` or `dynamo` would have been good choices.
 Due to time constraint for this task, chose to put add in the running container. 
 
 ## Deployment testing
