@@ -27,4 +27,5 @@ class OptionsRepository(
 
   fun deleteOption(productId: String, id: String) = productAndOptionMap[productId]!!.remove(id)!!
 
+  fun deleteAll() = productAndOptionMap.clear()
 }

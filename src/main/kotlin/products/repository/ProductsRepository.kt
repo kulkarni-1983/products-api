@@ -24,4 +24,6 @@ class ProductsRepository(
   fun deleteProduct(id: String) = productMap.remove(id)
 
   fun getAllProducts(): List<Product> = productMap.values.toList()
+
+  fun deleteAll() = productMap.clear()
 }

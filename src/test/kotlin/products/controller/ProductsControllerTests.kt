@@ -65,12 +65,12 @@ class ProductsControllerTests {
     val id = "product:id"
     val name = "product-name"
     val product = Product(id, name, "product-description", 10.0, 2.0)
-    whenever(productsService.getProductByName(name)).thenReturn(product)
+    whenever(productsService.getProductByName(name)).thenReturn(listOf(product))
 
     val result = productsController.getProductByName(name)
 
     verify(productsService, times(1)).getProductByName(name)
-    assertEquals(product, result)
+    assertEquals(listOf(product), result)
   }
 
   @Test

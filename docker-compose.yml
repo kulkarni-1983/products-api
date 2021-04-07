@@ -1,0 +1,17 @@
+version: '3.0'
+
+services:
+  build-products-api:
+    image: openjdk:14-jdk-alpine
+    volumes:
+      - ".:/app"
+    working_dir: /app
+  build-products-api-container:
+    image: products-api:${APP_VERSION}
+    build:
+      context: . 
+    environment:
+      - SERVER_PORT
+      - LOG_LEVEL
+    ports: 
+      - "${SERVER_PORT}:${SERVER_PORT}"

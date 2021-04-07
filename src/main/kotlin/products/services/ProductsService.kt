@@ -13,8 +13,8 @@ import products.repository.model.Product
 class ProductsService(private val productsRepository: ProductsRepository) {
 
   fun addProduct(product: ControllerProduct) = run {
-    if (productsRepository.filterByName(product.name).isNotEmpty()) {
-      throw ProductExists("Product cannot be added: Product with ${product.name} already exists")
+    if (product.id != null && productsRepository.containsProduct(product.id)) {
+      throw ProductExists("Product cannot be added: Product with ${product.id} already exists")
     }
     productsRepository.addOrUpdateProduct(product.toRepositoryProduct()).toControllerProduct()
   }
@@ -30,7 +30,7 @@ class ProductsService(private val productsRepository: ProductsRepository) {
     if (products.isEmpty()) {
       throw ProductDoesNotExist("Product with name: $name doesn't exist")
     }
-    products[0].toControllerProduct()
+    products.map{ it.toControllerProduct()}
   }
 
   fun updateProduct(id: String, product: ControllerProduct) = run {

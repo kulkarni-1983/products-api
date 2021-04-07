@@ -24,7 +24,7 @@ class ProductsController(private val productsService: ProductsService) {
   @GetMapping("/products/name={name}")
   fun getProductByName(
     @PathVariable name: String
-  ): Product = productsService.getProductByName(name)
+  ): List<Product> = productsService.getProductByName(name)
 
   @PostMapping("/products")
   fun addProduct(
