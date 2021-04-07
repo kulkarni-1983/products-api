@@ -3,3 +3,9 @@
 .idea
 # Ignore Gradle build output directory
 build
+
+#infra
+infra/.terraform/*
+infra/.terraform.lock.hcl
+infra/terraform.tfstate*
+

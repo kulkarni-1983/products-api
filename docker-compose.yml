@@ -6,12 +6,30 @@ services:
     volumes:
       - ".:/app"
     working_dir: /app
+
   build-products-api-container:
-    image: products-api:${APP_VERSION}
+    image: ${IMAGE_NAME}
+    container_name: ${IMAGE_NAME}
     build:
       context: . 
+      args:
+        - ARG_APP_VERSION=${APP_VERSION}
     environment:
       - SERVER_PORT
       - LOG_LEVEL
     ports: 
       - "${SERVER_PORT}:${SERVER_PORT}"
+
+  infra:
+    image: hashicorp/terraform:0.14.5
+    environment:
+      - AWS_REGION
+      - AWS_DEFAULT_REGION
+      - AWS_ACCOUNT_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_ACCESS_KEY_ID
+      - AWS_SESSION_TOKEN
+      - TF_LOG
+    volumes:
+      - './infra/:/app'
+    working_dir: /app
